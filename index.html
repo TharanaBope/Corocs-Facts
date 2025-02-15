@@ -1,103 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Facts Generator</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sneaky Crocodile Facts</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
+      :root {
+        --primary-color: #2c7a7b;
+        --secondary-color: #81e6d9;
+        --background-color: #1a202c;
+        --card-background: rgba(255, 255, 255, 0.1);
+        --button-color: #4fd1c5;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--background-color);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        padding: 20px;
+        position: relative;
+        min-height: 400px;
+      }
+
+      .fact-card {
+        background: var(--card-background);
+        backdrop-filter: blur(8px);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      #fact-text {
+        color: white;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        text-align: center;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .sneaky-button {
+        position: absolute;
+        padding: 1rem 2rem;
+        background: var(--button-color);
+        border: none;
+        border-radius: 50px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 15px rgba(79, 209, 197, 0.3);
+      }
+
+      .sneaky-button:hover {
+        transform: scale(1.05);
+      }
+
+      .sneaky-button.caught {
+        animation: celebrate 0.5s ease-in-out;
+      }
+
+      .attempts {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 1rem;
+      }
+
+      .attempt-dot {
+        width: 12px;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transition: background 0.3s ease;
+      }
+
+      .attempt-dot.used {
+        background: var(--secondary-color);
+      }
+
+      @keyframes celebrate {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2) rotate(10deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .fact-card {
+          padding: 1.5rem;
         }
 
-        .container {
-            text-align: center;
-            max-width: 600px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        #fact-text {
+          font-size: 1rem;
         }
-
-        .fact {
-            font-size: 1.5em;
-            margin: 20px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Fun Facts About Crocodiles</h1>
-        <div class="fact" id="factDisplay">Click the button to see a fun fact!</div>
-        <button id="generateFactButton">Generate Another Fun Fact</button>
+      <div class="fact-card">
+        <div class="attempts">
+          <span class="attempt-dot"></span>
+          <span class="attempt-dot"></span>
+          <span class="attempt-dot"></span>
+        </div>
+        <p id="fact-text">Catch the button to reveal a crocodile fact! 🐊</p>
+      </div>
+      <button id="sneaky-button" class="sneaky-button">Get Fact</button>
     </div>
 
     <script>
-        const facts = [
-            "Crocodiles are reptiles that belong to the family Crocodylidae.",
-            "They are found in tropical regions of Africa, Asia, the Americas, and Australia.",
-            "Crocodiles can live for over 70 years in the wild.",
-            "They are carnivorous and primarily eat fish, birds, and mammals.",
-            "Crocodiles have powerful jaws that can exert tremendous pressure.",
-            "They are excellent swimmers and can hold their breath underwater for up to an hour.",
-            "Crocodiles are cold-blooded, meaning their body temperature is regulated by their environment.",
-            "They have a unique ability to see both in and out of water due to a special membrane.",
-            "Crocodiles communicate through a variety of vocalizations, including growls and hisses.",
-            "Some species of crocodiles can reach lengths of over 20 feet (6 meters)."
-        ];
+      const facts = [
+        {
+          fact: "Crocodiles are large aquatic reptiles that live throughout the tropics in Africa, Asia, the Americas, and Australia.",
+        },
+        {
+          fact: "Crocodiles have powerful jaws with many conical teeth and short legs with clawed webbed toes.",
+        },
+        {
+          fact: "Crocodiles are carnivorous and have a diet that includes fish, birds, mammals, and occasionally smaller crocodiles.",
+        },
+        {
+          fact: "Crocodiles can live up to 70 years in the wild.",
+        },
+        {
+          fact: "Crocodiles are excellent swimmers and can hold their breath underwater for up to an hour.",
+        },
+        {
+          fact: "The largest species of crocodile is the saltwater crocodile, which can grow up to 23 feet long and weigh over 2,200 pounds.",
+        },
+        {
+          fact: "Crocodiles have a unique heart structure with four chambers, similar to birds and mammals.",
+        },
+        {
+          fact: "Crocodiles communicate with each other through vocalizations such as roars, growls, and hisses.",
+        },
+        {
+          fact: "Crocodiles have a special valve at the back of their throat called a palatal valve, which allows them to open their mouths underwater without drowning.",
+        },
+        {
+          fact: "Crocodiles are known for their ambush hunting technique, where they wait for prey to come close before launching a surprise attack.",
+        },
+      ];
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const button = document.getElementById("sneaky-button");
+        const factText = document.getElementById("fact-text");
+        const dots = document.querySelectorAll(".attempt-dot");
 
         let attempts = 0;
+        let isMoving = false;
+        let isCaught = false;
 
-        const factDisplay = document.getElementById('factDisplay');
-        const button = document.getElementById('generateFactButton');
+        function getRandomFact() {
+          return facts[Math.floor(Math.random() * facts.length)].fact;
+        }
 
-        button.addEventListener('click', () => {
-            if (attempts < 3) {
-                attempts++;
-                alert("You need to try harder! Attempts: " + attempts);
-            } else {
-                const randomIndex = Math.floor(Math.random() * facts.length);
-                factDisplay.textContent = facts[randomIndex];
-                attempts = 0; // Reset attempts after a successful fact display
-            }
-        });
+        function moveButton(e) {
+          if (isCaught || isMoving) return;
 
-        // Move button when user is near
-        document.addEventListener('mousemove', (event) => {
-            const buttonRect = button.getBoundingClientRect();
-            const distance = Math.sqrt(
-                Math.pow(event.clientX - (buttonRect.left + buttonRect.width / 2), 2) +
-                Math.pow(event.clientY - (buttonRect.top + buttonRect.height / 2), 2)
-            );
+          const buttonRect = button.getBoundingClientRect();
+          const mouseX = e.clientX;
+          const mouseY = e.clientY;
 
-            if (distance < 100) { // If the mouse is within 100px of the button
-                button.style.transform = translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px);
-            }
-        });
+          const distance = Math.sqrt(
+            Math.pow(mouseX - (buttonRect.left + buttonRect.width / 2), 2) +
+              Math.pow(mouseY - (buttonRect.top + buttonRect.height / 2), 2)
+          );
+
+          if (distance < 200 && attempts < 3) {
+            isMoving = true;
+            const containerRect = document
+              .querySelector(".container")
+              .getBoundingClientRect();
+
+            let newX = Math.random() * (containerRect.width - buttonRect.width);
+            let newY =
+              Math.random() * (containerRect.height - buttonRect.height);
+
+            button.style.transform = `translate(${newX}px, ${newY}px)`;
+            attempts++;
+            dots[attempts - 1].classList.add("used");
+
+            setTimeout(() => {
+              isMoving = false;
+            }, 500);
+          }
+        }
+
+        function catchButton() {
+          if (attempts >= 3 && !isCaught) {
+            isCaught = true;
+            button.classList.add("caught");
+            factText.textContent = getRandomFact();
+            button.textContent = "New Fact";
+
+            button.style.transform = "translate(0, 0)";
+          } else if (isCaught) {
+            factText.textContent = getRandomFact();
+          }
+        }
+
+        document.addEventListener("mousemove", moveButton);
+        button.addEventListener("click", catchButton);
+      });
     </script>
-</body>
+  </body>
 </html>
