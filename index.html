@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Facts Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .fact-container {
+            max-width: 600px;
+            padding: 20px;
+            margin: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: none; /* Initially hidden */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="fact-container">
+        <p>Scroll down to reveal the button and display a fun fact!</p>
+    </div>
+    <button>Show Random Fact</button>
+    <script>
+        let scrollAttempts = 0;
+        const maxAttempts = 3;
+        const button = document.querySelector('button');
+        const factContainer = document.querySelector('.fact-container');
+        const facts = [
+            "Crocodiles are large aquatic reptiles that live throughout the tropics in Africa, Asia, the Americas, and Australia.",
+            "Crocodiles have powerful jaws with many conical teeth and short legs with clawed webbed toes.",
+            "Crocodiles are carnivorous and have a diet that includes fish, birds, mammals, and occasionally smaller crocodiles.",
+            "Crocodiles can live up to 70 years in the wild.",
+            "Crocodiles are excellent swimmers and can hold their breath underwater for up to an hour.",
+            "The largest species of crocodile is the saltwater crocodile, which can grow up to 23 feet long and weigh over 2,200 pounds.",
+            "Crocodiles have a unique heart structure with four chambers, similar to birds and mammals.",
+            "Crocodiles communicate with each other through vocalizations such as roars, growls, and hisses.",
+            "Crocodiles have a special valve at the back of their throat called a palatal valve, which allows them to open their mouths underwater without drowning.",
+            "Crocodiles are known for their ambush hunting technique, where they wait for prey to come close before launching a surprise attack."
+        ];
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+                scrollAttempts++;
+                if (scrollAttempts >= maxAttempts) {
+                    button.style.display = 'block';
+                }
+            }
+        });
+
+        button.addEventListener('click', () => {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            factContainer.textContent = facts[randomIndex];
+        });
+    </script>
+</body>
+</html>
