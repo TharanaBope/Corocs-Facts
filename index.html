@@ -6,38 +6,42 @@
     <title>Fun Facts Generator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: 'Arial', sans-serif;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
         }
 
-        .fact-container {
+        .container {
+            text-align: center;
             max-width: 600px;
             padding: 20px;
-            margin: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            text-align: center;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .fact {
+            font-size: 1.5em;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         button {
             padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #007BFF;
-            color: #fff;
+            font-size: 1em;
             border: none;
             border-radius: 5px;
+            background-color: #007bff;
+            color: white;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            display: none; /* Initially hidden */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         button:hover {
@@ -46,40 +50,53 @@
     </style>
 </head>
 <body>
-    <div class="fact-container">
-        <p>Scroll down to reveal the button and display a fun fact!</p>
+    <div class="container">
+        <h1>Fun Facts About Crocodiles</h1>
+        <div class="fact" id="factDisplay">Click the button to see a fun fact!</div>
+        <button id="generateFactButton">Generate Another Fun Fact</button>
     </div>
-    <button>Show Random Fact</button>
+
     <script>
-        let scrollAttempts = 0;
-        const maxAttempts = 3;
-        const button = document.querySelector('button');
-        const factContainer = document.querySelector('.fact-container');
         const facts = [
-            "Crocodiles are large aquatic reptiles that live throughout the tropics in Africa, Asia, the Americas, and Australia.",
-            "Crocodiles have powerful jaws with many conical teeth and short legs with clawed webbed toes.",
-            "Crocodiles are carnivorous and have a diet that includes fish, birds, mammals, and occasionally smaller crocodiles.",
-            "Crocodiles can live up to 70 years in the wild.",
-            "Crocodiles are excellent swimmers and can hold their breath underwater for up to an hour.",
-            "The largest species of crocodile is the saltwater crocodile, which can grow up to 23 feet long and weigh over 2,200 pounds.",
-            "Crocodiles have a unique heart structure with four chambers, similar to birds and mammals.",
-            "Crocodiles communicate with each other through vocalizations such as roars, growls, and hisses.",
-            "Crocodiles have a special valve at the back of their throat called a palatal valve, which allows them to open their mouths underwater without drowning.",
-            "Crocodiles are known for their ambush hunting technique, where they wait for prey to come close before launching a surprise attack."
+            "Crocodiles are reptiles that belong to the family Crocodylidae.",
+            "They are found in tropical regions of Africa, Asia, the Americas, and Australia.",
+            "Crocodiles can live for over 70 years in the wild.",
+            "They are carnivorous and primarily eat fish, birds, and mammals.",
+            "Crocodiles have powerful jaws that can exert tremendous pressure.",
+            "They are excellent swimmers and can hold their breath underwater for up to an hour.",
+            "Crocodiles are cold-blooded, meaning their body temperature is regulated by their environment.",
+            "They have a unique ability to see both in and out of water due to a special membrane.",
+            "Crocodiles communicate through a variety of vocalizations, including growls and hisses.",
+            "Some species of crocodiles can reach lengths of over 20 feet (6 meters)."
         ];
 
-        window.addEventListener('scroll', () => {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
-                scrollAttempts++;
-                if (scrollAttempts >= maxAttempts) {
-                    button.style.display = 'block';
-                }
+        let attempts = 0;
+
+        const factDisplay = document.getElementById('factDisplay');
+        const button = document.getElementById('generateFactButton');
+
+        button.addEventListener('click', () => {
+            if (attempts < 3) {
+                attempts++;
+                alert("You need to try harder! Attempts: " + attempts);
+            } else {
+                const randomIndex = Math.floor(Math.random() * facts.length);
+                factDisplay.textContent = facts[randomIndex];
+                attempts = 0; // Reset attempts after a successful fact display
             }
         });
 
-        button.addEventListener('click', () => {
-            const randomIndex = Math.floor(Math.random() * facts.length);
-            factContainer.textContent = facts[randomIndex];
+        // Move button when user is near
+        document.addEventListener('mousemove', (event) => {
+            const buttonRect = button.getBoundingClientRect();
+            const distance = Math.sqrt(
+                Math.pow(event.clientX - (buttonRect.left + buttonRect.width / 2), 2) +
+                Math.pow(event.clientY - (buttonRect.top + buttonRect.height / 2), 2)
+            );
+
+            if (distance < 100) { // If the mouse is within 100px of the button
+                button.style.transform = translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px);
+            }
         });
     </script>
 </body>
